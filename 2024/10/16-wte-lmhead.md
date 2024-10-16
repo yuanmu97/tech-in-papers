@@ -34,6 +34,30 @@ Source: [Why is the lm_head layer in GPT2LMHeadModel not a parameter?](https://d
                   module._tie_weights()
   ```
 
+  其中用到的 `_tie_or_clone_weights()` 函数：
+
+  ```python
+  def _tie_or_clone_weights(self, output_embeddings, input_embeddings):
+          """Tie or clone module weights depending of whether we are using TorchScript or not"""
+          if self.config.torchscript:
+              output_embeddings.weight = nn.Parameter(input_embeddings.weight.clone())
+          else:
+              output_embeddings.weight = input_embeddings.weight
+  
+          if getattr(output_embeddings, "bias", None) is not None:
+              output_embeddings.bias.data = nn.functional.pad(
+                  output_embeddings.bias.data,
+                  (
+                      0,
+                      output_embeddings.weight.shape[0] - output_embeddings.bias.shape[0],
+                  ),
+                  "constant",
+                  0,
+              )
+          if hasattr(output_embeddings, "out_features") and hasattr(input_embeddings, "num_embeddings"):
+              output_embeddings.out_features = input_embeddings.num_embeddings
+  ```
+
   可以看到，根据 config 里 `tie_word_embeddings` 的值，会决定是否将 `output_embeddings` 赋值为 `input_embeddings`
 
   而在 `GPT2LMHeadModel` 中：
@@ -51,6 +75,19 @@ Source: [Why is the lm_head layer in GPT2LMHeadModel not a parameter?](https://d
   ```
 
   可见其 output_embeddings 即是 lm_head，input_embeddings 即是 wte.
+
+  那一个可能的问题是，lm_head 和 wte 不是互相为转置关系吗？为什么直接赋值？原因如下：
+
+  * wte 的实现是 `self.wte = nn.Embedding(config.vocab_size, self.embed_dim)`
+    * Embedding 类实现的是 $xW$​​ 
+    * x 的 shape 是 (token_num, vocab_size)
+    * W 的 shape 是 (vocab_size, embed_len)
+  * Lm_head 的实现是 `self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)`
+    * Linear 类实现的是 $xW^T$​
+    * x 的 shape 是 (token_num, embed_len)
+    * W 的 shape 仍然是 (vocab_size, embed_len)
+
+  因此，这俩个类的权重直接赋值之后，实现的计算效果仍然是互为转置关系的。
 
 **What 做到什么效果**
 
