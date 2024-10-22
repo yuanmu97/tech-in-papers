@@ -1,4 +1,4 @@
-# 18-mpc
+# 21-mpc
 Source: A Pragmatic Introduction to Secure Multi-Party Computation
 
 这是一本关于安全多方计算的书，决心从头学一下 secure computation 相关知识。
