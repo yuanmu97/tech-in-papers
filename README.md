@@ -14,4 +14,5 @@ Techniques in papers, personal learning logs
   * 21 [MPC](./2024/10/21-mpc.md)
   * 22 [Server-Aided](./2024/10/22-server-aided.md)
   * 23 [Ideal World](./2024/10/28-ideal-world.md)
+  * 23 [Circuit](./2024/10/29-circuit.md)
 
