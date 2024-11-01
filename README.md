@@ -16,4 +16,5 @@ Techniques in papers, personal learning logs
   * 23 [Ideal World](./2024/10/28-ideal-world.md)
   * 29 [Circuit](./2024/10/29-circuit.md)
   * 30 [Stateless](./2024/10/30-stateless.md)
+  * 31 [Mix Networks](./2024/10/31-mix-networks.md)
 
