@@ -44,7 +44,7 @@ attention：
 
 如果为了计算完整的、新的 $QK^T$ 我们其实需要完整的 Q 和 K，如下图所示：
 
-<img src="/Users/yuanmu/Desktop/tech-in-papers/2024/11/image-20241101114429174.png" alt="image-20241101114429174" style="zoom:50%;" />
+<img src="./image-20241101114429174.png" alt="image-20241101114429174" style="zoom:50%;" />
 
 因为有新的 $Q_t$ 所以旧的 K 需要拿出来，新的一行（橙色）与 K 计算之后，得到最后一行新的橙色结果
 
@@ -52,7 +52,7 @@ attention：
 
 但是在 decoder 中，我们会对结果进行 masking，新的红色一列是不需要的，所以，实际上我们只需要把旧的 K 进行缓存，计算的时候取出即可：
 
-<img src="/Users/yuanmu/Desktop/tech-in-papers/2024/11/image-20241101114746434.png" alt="image-20241101114746434" style="zoom:50%;" />
+<img src="./image-20241101114746434.png" alt="image-20241101114746434" style="zoom:50%;" />
 
 这就是 k-cache 即为了计算新的一行，需要把之前计算过的灰色的 K 进行缓存。
 
@@ -62,11 +62,11 @@ attention：
 
 之后 $a_1^{(t)}$ 和 $[V,V_t]$ 进行相乘，如下图所示：
 
-<img src="/Users/yuanmu/Desktop/tech-in-papers/2024/11/image-20241101120027239.png" alt="image-20241101120027239" style="zoom:50%;" />
+<img src="./image-20241101120027239.png" alt="image-20241101120027239" style="zoom:50%;" />
 
 但由于 $a_1$ 的右上角都被 masking 为 0 了，所以实际上计算出的结果只有最后一行是新的，也就是说，之前的 n*n 的 attention 结果并不需要，在这一步只需要把旧的 V 缓存拿出来就行：
 
-<img src="/Users/yuanmu/Desktop/tech-in-papers/2024/11/image-20241101120036197.png" alt="image-20241101120036197" style="zoom:50%;" />
+<img src="./image-20241101120036197.png" alt="image-20241101120036197" style="zoom:50%;" />
 
 得到新的 $a_2^{(t)}$ 的 shape 是 1*d
 
