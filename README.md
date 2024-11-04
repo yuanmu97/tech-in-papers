@@ -20,3 +20,4 @@ Techniques in papers, personal learning logs
 
 * Nov.
   * 1 [KV-Cache](./2024/11/1-kvcache.md)
+  * 4 [SGX](./2024/11/4-sgx.md)

@@ -5,7 +5,7 @@
 
 **1. prefill 阶段**
 
-输入数据：$x \in R^{n\times d}$ 其中 n 是 prompt 长度，d 是Embedding 长度
+输入数据： $x \in R^{n\times d}$ 其中 n 是 prompt 长度，d 是Embedding 长度
 
 attention：
 
@@ -30,7 +30,7 @@ feedforward：
 
 **2. auto-regressive generation 阶段**
 
-输入数据：$t \in R^{1\times d}$​ 是新生成的一个 token 的 Embedding
+输入数据： $t \in R^{1\times d}$​ 是新生成的一个 token 的 Embedding
 
 我们用 $[x,t] \in R^{(n+1)\times d}$ 表示将 x 和 t 拼接后的 Embedding
 
@@ -74,7 +74,7 @@ attention：
 
 最后把得到的 $a_3^{(t)}$ 与 $x_t$ 相加后做 LN 即可，由于 LN 是按行计算的，新的结果只需要这两个向量
 
-feedforward 同 QKV 以及 Wo 的计算，都不需要之前的运算结果，只需要用新的一维向量和权重做运算，最终得到下一个 Transformer layer 的输入：$y_t \in R^{1\times d}$
+feedforward 同 QKV 以及 Wo 的计算，都不需要之前的运算结果，只需要用新的一维向量和权重做运算，最终得到下一个 Transformer layer 的输入： $y_t \in R^{1\times d}$
 
 
 
