@@ -21,3 +21,5 @@ Techniques in papers, personal learning logs
 * Nov.
   * 1 [KV-Cache](./2024/11/1-kvcache.md)
   * 4 [SGX](./2024/11/4-sgx.md)
+  * 5 [Confidential Computing](./2024/11/5-confidential-comp.md)
+  * 6 [ZKP](./2024/11/6-zkp.md)
