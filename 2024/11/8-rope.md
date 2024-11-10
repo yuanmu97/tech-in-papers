@@ -6,25 +6,29 @@ RoPE: rotary positional embedding
 考虑处于序列中位置为 i 的特征 $x\in R^{1\times d}$  ，首先将其在特征维度按顺序两两组成一对，例如 $x=[x_1, x_2, x_3, x_4, x_5, x_6]$ 则会产生三对： $[x_1, x_2], [x_3, x_4], [x_5, x_6]$​
 
 对于一对特征 $[x_{2k-1}, x_{2k}], k=\{0, ..., d/2\}$ 其用于变换的 encoding 如下计算：
+
 $$
 R(i\theta)=\begin{pmatrix} \cos(i\theta) & -\sin(i\theta) \\ \sin(i\theta) & \cos(i\theta) \end{pmatrix}
 $$
+
 其中的 $\theta=\frac{1}{10000^{\frac{2k}{d}}}$​  即：
+
 $$
 R(i, k)=\begin{pmatrix} \cos(\frac{i}{10000^{2k/d}}) & -\sin(\frac{i}{10000^{2k/d}}) \\ \sin(\frac{i}{10000^{2k/d}}) & \cos(\frac{i}{10000^{2k/d}}) \end{pmatrix}, k=\{0,1, ..., d/2\}.
 $$
+
 然后计算：
+
+$$ \begin{pmatrix} x_{2k-1}' \\ x_{2k}' \end{pmatrix} =  \begin{pmatrix} \cos( \frac{i}{10000^{2k/d}}) & - \sin( \frac{i}{10000^{2k/d}}) \\ \sin ( \frac{i}{10000^{2k/d}}) & \cos ( \frac{i}{10000^{2k/d}}) \end{pmatrix} \begin{pmatrix} x_{2k-1} \\ x_{2k} \end{pmatrix} 
 $$
-\begin{pmatrix} x'_{2k-1} \\ x'_{2k} \end{pmatrix} =  \begin{pmatrix} \cos(\frac{i}{10000^{2k/d}}) & -\sin(\frac{i}{10000^{2k/d}}) \\ \sin(\frac{i}{10000^{2k/d}}) & \cos(\frac{i}{10000^{2k/d}}) \end{pmatrix} \begin{pmatrix} x_{2k-1} \\ x_{2k} \end{pmatrix}
-$$
+
 最后将分成对的特征再拼接回去即可。
 
 具体地，对于 $[x_1, x_2]$ 而言：
 
-$x_1' = cos*x_1 - sin*x_2$
+$x_1' = cos * x_1 - sin * x_2$
 
-$x_2' = sin*x_1 + cos * x_2$
-
+$x_2' = sin * x_1 + cos * x_2$
 
 
 在实现上，`huggingface transformers` 这样实现 LLaMA 的 RoPE 操作：
@@ -48,9 +52,9 @@ def apply_rotary_pos_emb(q, k, cos, sin, unsqueeze_dim=1):
 
 其计算中用到了一个 `rotate_half` 功能是将 x 切两半，但拼接的时候是拼成 `[-x2,x1]`
 
-计算的时候，上半部结果是： $x_1 * cos - x_2 * sin$ ，下半部的结果是： $x_2*cos + x_1*sin$
+计算的时候，上半部结果是： $x_1 * cos - x_2 * sin$ ，下半部的结果是： $x_2 * cos + x_1 * sin$
 
-可是，这只对于 d=2 的情况下成立，当 d 不是 2 的时候，`rotate_half` 会将整个特征从中间切分，而非按顺序两两为一对地切分，例如，会把`[x1, x2, x3, x4, x5, x6]` 切分为 `[x1, x2, x3], [x4, x5, x6]` 这样再计算 embedding 的时候，会得到： $x_1' = cos*x_1 - sin*x_4$ 这显然是错误的！
+可是，这只对于 d=2 的情况下成立，当 d 不是 2 的时候，`rotate_half` 会将整个特征从中间切分，而非按顺序两两为一对地切分，例如，会把`[x1, x2, x3, x4, x5, x6]` 切分为 `[x1, x2, x3], [x4, x5, x6]` 这样再计算 embedding 的时候，会得到： $x_1' = cos * x_1 - sin * x_4$ 这显然是错误的！
 
 那么问题来了，huggingface transformers 的模型又是可以正常使用的，说明 RoPE 的实现并没有问题。原因在哪呢？
 
@@ -88,7 +92,7 @@ tensor([[ 0.0351, -1.8382, -0.4659, -0.6392, -1.4064,  2.5892],
         [-0.5279, -0.5472, -0.2414,  0.1889,  1.3524, -0.7277]])
 ```
 
-可以看到，这个 permute 操作实际上就是把原本的参数的第 [2k-1, 2k] 行，置换到第 [k, d/2+k] 行去了。那么，我们将得到特征 `[x1, x3, x5, x2, x4, x6]` ，这样的话，再进行 rotate_half 操作之后，我们会切分为 `[x1, x3, x5], [x2, x4, x6]` ，再计算 embedding，会得到： $x_1' = cos*x_1 - sin*x_2$  结果正确！
+可以看到，这个 permute 操作实际上就是把原本的参数的第 [2k-1, 2k] 行，置换到第 [k, d/2+k] 行去了。那么，我们将得到特征 `[x1, x3, x5, x2, x4, x6]` ，这样的话，再进行 rotate_half 操作之后，我们会切分为 `[x1, x3, x5], [x2, x4, x6]` ，再计算 embedding，会得到： $x_1' = cos * x_1 - sin * x_2$  结果正确！
 
 至此，我们弄明白了 RoPE 的原理和公式，以及 HF 的实现。
 
@@ -150,7 +154,7 @@ tensor([(1.6116-0.5772j), (-1.4606-0.9120j), (0.0786-1.7497j), (-0.6561-1.6623j)
 
 那么，对于复数特征 $x_1 + x_2 j$ 而言，我们希望得到新的复数 embedding 应该是：
 
-$(x_1 cos - x_2 sin)+(x_1 sin + x_2 cos)j$
+$(x_1 cos - x_2 sin) + (x_1 sin + x_2 cos)j$
 
 即 $c=cos,d=sin$ ，即 freqs_cis = [cos, sin] 的复数时，即可正确完成 embedding 计算。
 
