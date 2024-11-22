@@ -27,3 +27,4 @@ Techniques in papers, personal learning logs
   * 11 [MHA](./2024/11/11-mha.md)
   * 18 [HM Microkernel](./2024/11/18-hm-microkernel.md)
   * 20 [CryptoNets](./2024/11/20-cryptonets.md)
+  * 22 [SecureML](./2024/11/22-secureml.md)
