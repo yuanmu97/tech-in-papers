@@ -29,3 +29,6 @@ Techniques in papers, personal learning logs
   * 20 [CryptoNets](./2024/11/20-cryptonets.md)
   * 22 [SecureML](./2024/11/22-secureml.md)
   * 27 [TEE](./2024/11/27-tee.md)
+* Dec.
+  * 12 [CFD](./2024/12/12-cfd.md)
+  * 13 [Rapidash](./2024/12/13-rapidash.md)
