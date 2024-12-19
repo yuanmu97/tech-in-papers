@@ -33,4 +33,5 @@ Techniques in papers, personal learning logs
   * 12 [CFD](./2024/12/12-cfd.md)
   * 13 [Rapidash](./2024/12/13-rapidash.md)
   * 16 [DC Discovery](./2024/12/16.md)
+  * 18 [Order Dependency](./2024/12/18.md)
   * 19 [DC Discovery Origin](./2024/12/19.md)
