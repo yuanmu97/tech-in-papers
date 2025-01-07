@@ -35,3 +35,10 @@ Techniques in papers, personal learning logs
   * 16 [DC Discovery](./2024/12/16.md)
   * 18 [Order Dependency](./2024/12/18.md)
   * 19 [DC Discovery Origin](./2024/12/19.md)
+
+
+
+2025
+
+* Jan
+  * 07 [NV Datacenter](./2025/1/07.md)
