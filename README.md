@@ -42,3 +42,5 @@ Techniques in papers, personal learning logs
 
 * Jan
   * 07 [NV Datacenter](./2025/1/07.md)
+* Feb
+  * 24 [DeepSeek-R1](./2025/2/24.md)
