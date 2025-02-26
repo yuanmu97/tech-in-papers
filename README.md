@@ -44,3 +44,4 @@ Techniques in papers, personal learning logs
   * 07 [NV Datacenter](./2025/1/07.md)
 * Feb
   * 24 [DeepSeek-R1](./2025/2/24.md)
+  * 25-26 [NVIDIA IoT](./2025/2/25.md)
