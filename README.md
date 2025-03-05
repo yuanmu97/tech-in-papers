@@ -45,3 +45,5 @@ Techniques in papers, personal learning logs
 * Feb
   * 24 [DeepSeek-R1](./2025/2/24.md)
   * 25-26 [NVIDIA IoT](./2025/2/25.md)
+* Mar
+  * 05 [Agentic AI](./2025/3/5.md)
