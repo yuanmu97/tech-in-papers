@@ -47,3 +47,4 @@ Techniques in papers, personal learning logs
   * 25-26 [NVIDIA IoT](./2025/2/25.md)
 * Mar
   * 05 [Agentic AI](./2025/3/5.md)
+  * 06 [Web Agent](./2025/3/6.md)
